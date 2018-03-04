@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+	<context id="bankdata" targetRuntime="MyBatis3">
+
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<property name="addRemarkComments" value="true" />
+		</commentGenerator>
+
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:13306/sun" userId="root"
+			password="long19900123">
+		</jdbcConnection>
+
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<javaModelGenerator targetPackage="cn.suishoucms.weixin.sun.entity"
+			targetProject="F:\work\yule\wexin\sun\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="config.mapper"
+			targetProject="F:\work\yule\wexin\sun\src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="cn.suishoucms.weixin.sun.mapper"
+			targetProject="F:\work\yule\wexin\sun\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		
+
+		
+		<table schema="DB2ADMIN" tableName="product"
+			 domainObjectName="Product"
+			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+		</table>
+		
+			<table schema="DB2ADMIN" tableName="session"
+			 domainObjectName="Session"
+			delimitAllColumns="true"
+			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+			
+		</table>
+		
+
+
+	</context>
+
+
+
+
+
+
+
+
+</generatorConfiguration>
