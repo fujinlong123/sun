@@ -22,5 +22,17 @@ public class TestController {
 		map.put("foo", null);
 		return map;
 	}
+	
+	
+	@RequestMapping("sleep10")
+	@ResponseBody
+	public Object sleep10() throws InterruptedException{
+		Thread.sleep(10000);
+		Map<String, Object> map=new HashMap<>();
+		map.put("ret", "ok");
+		map.put("date", new Date());
+		map.put("foo", null);
+		return map;
+	}
 
 }

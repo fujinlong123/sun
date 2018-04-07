@@ -6,14 +6,15 @@ import java.util.Map;
 public class Result {
 	private String ret;
 	private String msg;
-	private String errorCode;
+	private String code;//nologin
 	private Map<String, Object> data;
+	private String sessionId;
 
-	public Result(String ret, String msg, String errorCode) {
+	public Result(String ret, String msg, String code) {
 		super();
 		this.ret = ret;
 		this.msg = msg;
-		this.errorCode = errorCode;
+		this.code = code;
 	}
 
 	public String getRet() {
@@ -32,17 +33,25 @@ public class Result {
 		this.msg = msg;
 	}
 
-	public String getErrorCode() {
-		return errorCode;
+
+
+
+	public String getCode() {
+		return code;
 	}
 
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public static Result fail(String msg) {
 		return new Result("fail", msg, null);
 	}
+	
+	public static Result fail(String msg,String failCode) {
+		return new Result("fail", msg, failCode);
+	}
+	
 
 	public static Result success(String msg) {
 		return new Result("success", msg, null);
@@ -69,6 +78,18 @@ public class Result {
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+
+	
+	
 	
 	
 

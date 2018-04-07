@@ -11,5 +11,5 @@
 
 	<context:component-scan base-package="cn.suishoucms.weixin.sun.service"></context:component-scan>
 	<import resource="classpath*:/config/spring-mybaties.xml" />
-
+	<bean id="springContextHolder" class="cn.suishoucms.weixin.sun.utils.SpringUtil" /> 
 </beans>

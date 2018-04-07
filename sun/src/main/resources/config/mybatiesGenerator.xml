@@ -27,19 +27,19 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<javaModelGenerator targetPackage="cn.suishoucms.weixin.sun.entity"
-			targetProject="F:\work\yule\wexin\sun\src\main\java">
+			targetProject="G:\github\sun\sun\src\main\java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
 		<sqlMapGenerator targetPackage="config.mapper"
-			targetProject="F:\work\yule\wexin\sun\src\main\resources">
+			targetProject="G:\github\sun\sun\src\main\resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<javaClientGenerator type="XMLMAPPER"
 			targetPackage="cn.suishoucms.weixin.sun.mapper"
-			targetProject="F:\work\yule\wexin\sun\src\main\java">
+			targetProject="G:\github\sun\sun\src\main\java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		
@@ -48,13 +48,34 @@
 		<table schema="DB2ADMIN" tableName="product"
 			 domainObjectName="Product"
 			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
-			<table schema="DB2ADMIN" tableName="session"
+		<table schema="DB2ADMIN" tableName="session"
 			 domainObjectName="Session"
 			delimitAllColumns="true"
 			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
-			
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+			<table schema="DB2ADMIN" tableName="user"
+			 domainObjectName="User"
+			delimitAllColumns="true"
+			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		<table schema="DB2ADMIN" tableName="store"
+			 domainObjectName="Store"
+			delimitAllColumns="true"
+			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+		
+		<table schema="DB2ADMIN" tableName="store_user"
+			 domainObjectName="StoreUser"
+			delimitAllColumns="true"
+			enableDeleteByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableSelectByExample="false" >
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
 		</table>
 		
 

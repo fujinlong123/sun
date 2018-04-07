@@ -1,6 +1,8 @@
 package cn.suishoucms.weixin.sun.service;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -10,39 +12,44 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
 import cn.suishoucms.weixin.sun.entity.Session;
 import cn.suishoucms.weixin.sun.mapper.SessionMapper;
 import cn.suishoucms.weixin.sun.sharesession.ShareSession;
+import cn.suishoucms.weixin.sun.utils.SessionIdUtils;
 
 @Service
 public class SessionService {
 
 	@Resource
 	private SessionMapper sessionMapper;
+	
+	private  LoadingCache<String, ShareSession> cache = CacheBuilder.newBuilder().maximumSize(100000).refreshAfterWrite(1, TimeUnit.DAYS)
+			.build(new CacheLoader<String, ShareSession>(){
+				@Override
+				public ShareSession load(String key) throws Exception {	
+					return new ShareSession(key, SessionService.this);
+				}
 
-	private ThreadLocal<ShareSession> ShareSessionThreadLocal = new ThreadLocal<ShareSession>() {
-		@Override
-		protected ShareSession initialValue() {
-			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-					.getRequest();
-			String sessionId = request.getParameter("sessionId");
-			if (StringUtils.isEmpty(sessionId)) {
-				sessionId = (String) request.getAttribute("sessionId");
-			}
-			if (StringUtils.isEmpty(sessionId)) {
-				throw new RuntimeException("sessionId为空，请登录之后在使用ShareSession");
-			}
-			return new ShareSession(sessionId, SessionService.this);
-		};
-	};
+	});
+	
+	
+
+
 
 	/**
 	 * 获取共享sessionId,必须登录之后才能使用
 	 * 
 	 * @return
+	 * @throws ExecutionException 
 	 */
-	public ShareSession getShareSession() {
-		return ShareSessionThreadLocal.get();
+	public ShareSession getShareSession() throws ExecutionException {
+		String sessionId=SessionIdUtils.getSessionId();
+		return cache.get(sessionId);
 	}
 
 	public int put(String sessionId, String key, String value) {
@@ -50,14 +57,21 @@ public class SessionService {
 		if (session == null) {
 			session = new Session();
 			session.setInsertTime(new Date());
+			session.setUpdateTime(new Date());
 			session.setKey(key);
 			session.setSessionId(sessionId);
 			session.setValue(value);
 			return sessionMapper.insert(session);
 		} else {
 			session.setValue(value);
+			session.setUpdateTime(new Date());
 			return sessionMapper.updateByPrimaryKey(session);
 		}
+
+	}
+	
+	public int put(String sessionId, String key, Object value) {
+	return	put( sessionId,  key,JSON.toJSONString(value));
 
 	}
 

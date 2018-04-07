@@ -24,7 +24,7 @@ public class ShareSession {
 		this.sessionId = sessionId;
 	}
 
-	public <T> T getAttribute(String key,Class<T> clazz) {
+	public <T> T getAttribute(String key,Class<T> clazz,boolean fromDb) {
 		String value=sessionService.get(sessionId, key);
 		if(clazz==String.class){
 			return (T)value;
@@ -52,8 +52,11 @@ public class ShareSession {
 		setAttribute("weiXinLoginInfo", text);
 	}
 	public WeiXinLoginInfo getWeiXinLoginInfo(){
-		return  getAttribute("weiXinLoginInfo", WeiXinLoginInfo.class);
+		return getWeiXinLoginInfo(false);
 	}
 	
+	public WeiXinLoginInfo getWeiXinLoginInfo(boolean fromDb){
+		return  getAttribute("weiXinLoginInfo", WeiXinLoginInfo.class, fromDb);
+	}
 
 }

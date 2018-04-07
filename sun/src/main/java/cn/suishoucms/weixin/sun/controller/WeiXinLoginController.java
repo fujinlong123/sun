@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,11 +15,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.mysql.cj.api.Session;
 
+import cn.suishoucms.weixin.sun.model.WeiXinLoginInfo;
 import cn.suishoucms.weixin.sun.service.ConfigService;
+import cn.suishoucms.weixin.sun.service.InitService;
 import cn.suishoucms.weixin.sun.service.SessionService;
 import cn.suishoucms.weixin.sun.sharesession.ShareSession;
 import cn.suishoucms.weixin.sun.utils.HttpUtils;
 import cn.suishoucms.weixin.sun.utils.Result;
+import cn.suishoucms.weixin.sun.utils.SessionIdUtils;
 import cn.suishoucms.weixin.sun.utils.StringResponse;
 
 @Controller
@@ -30,6 +34,9 @@ public class WeiXinLoginController {
 	
 	@Resource
 	private SessionService sessionService;
+	@Resource
+	private InitService initService;
+	
 
 	@RequestMapping("onLogin")
 	@ResponseBody
@@ -38,15 +45,17 @@ public class WeiXinLoginController {
 				+ configService.getAppSecret() + "&js_code=" + code + "&grant_type=authorization_code";
 		try {
 			StringResponse sr = HttpUtils.get(url);
-			System.out.println(sr.getResponseBody());
 			JSONObject jsonObject=JSON.parseObject(sr.getResponseBody());
 			if(!jsonObject.containsKey("errcode")){
-				String sessionId=UUID.randomUUID().toString().replace("-", "");
-				request.setAttribute("sessionId", sessionId);
+				String sessionId=SessionIdUtils.getNewSessionId();
+				SessionIdUtils.setSessionId(sessionId);
 				ShareSession shareSession=sessionService.getShareSession();
 				shareSession.setWeiXinLoginInfo(sr.getResponseBody());
+				WeiXinLoginInfo weiXinLoginInfo=shareSession.getWeiXinLoginInfo();
+				initService.init(weiXinLoginInfo.getOpenid());
 				Result result=Result.success("登录成功");
-				result.data("sessionId", sessionId);
+				result.setSessionId(sessionId);
+				
 				return result;
 			}else{
 				Result result=Result.fail("登录失败");
@@ -54,9 +63,18 @@ public class WeiXinLoginController {
 			}
 		
 		} catch (Exception e) {
+			e.printStackTrace();
 			Result result=Result.fail("服务器异常");
 			return result;
 		}
 	}
 
+	
+	@RequestMapping("noLogin")
+	@ResponseBody
+	public Object noLogin(HttpServletRequest request){
+		Result result= Result.fail("未登录","noLogin");
+		result.setSessionId(SessionIdUtils.getSessionId());
+		return result;
+	}
 }

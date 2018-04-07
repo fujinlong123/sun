@@ -54,5 +54,6 @@ public interface SessionMapper {
     int updateByPrimaryKey(Session record);
 
     Session selectBy(@Param("sessionId") String sessionId, @Param("key") String key);
+
     int del(@Param("sessionId") String sessionId, @Param("key") String key);
 }
