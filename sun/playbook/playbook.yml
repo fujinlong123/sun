@@ -1,5 +1,5 @@
 ---
-- hosts: "{{host}}"
+- hosts: "{{hosts}}"
   tasks:
     - name: "create the tmp directory!"
       shell: mkdir "{{tomcathome}}"/fffff
