@@ -2,4 +2,4 @@
 - hosts: {{host}}
   tasks:
     - name: "create the tmp directory!"
-     command: mkdir {{tomcathome}}/fffff
+     shell: mkdir {{tomcathome}}/fffff
