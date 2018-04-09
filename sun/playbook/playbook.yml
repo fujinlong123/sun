@@ -1,4 +1,5 @@
 ---
-- hosts: example
+- hosts: {{host}}
   tasks:
-    - debug: msg="{{ lookup('env','BUILD_TAG') }}"
+    - name: "create the tmp directory!"
+     command: mkdir {{tomcathome}}/fffff
