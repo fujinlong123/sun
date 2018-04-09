@@ -1,5 +1,5 @@
 ---
 - hosts: {{host}}
   tasks:
-	- name: "create the tmp directory!"
- 	  shell: mkdir {{tomcathome}}/fffff
+    - name: "create the tmp directory!"
+      shell: mkdir {{tomcathome}}/fffff
