@@ -14,7 +14,7 @@
       
           
     - name: offline
-      copy: mv {{tomcathome}}/webapps/ROOT/index.html {{tomcathome}}/webapps/ROOT/index.html1
+      copy: rm {{tomcathome}}/webapps/ROOT/index.html
       ignore_errors: True
       
     - name: pause 30s
@@ -36,6 +36,9 @@
       shell: export LANG=en_US.UTF-8 && nohup {{tomcathome}}/bin/startup.sh
       
     - name: pause 30s
-      pause: seconds=30  
+      pause: seconds=30
+      
+    - name: online
+      shell: echo "" >{{tomcathome}}/webapps/ROOT/index.html      
   
                                  
