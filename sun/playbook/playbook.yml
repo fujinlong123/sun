@@ -2,4 +2,40 @@
 - hosts: "{{hosts}}"
   tasks:
     - name: "create the tmp directory!"
-      shell: mkdir "{{tomcathome}}/fffff"
+      shell: mkdir "{{tomcathome}}/tmp"
+      ignore_errors: True
+      
+    - name: backup
+      shell: mv {{tomcathome}}/tmp/{{finalName}}.war {{tomcathome}}/tmp/{{finalName}}bak.war
+      ignore_errors: True
+            
+    - name: copy war to tmp
+      copy: src={{ war_path }} dest={{tomcathome}}/tmp/
+      
+          
+    - name: offline
+      copy: mv {{tomcathome}}/webapps/ROOT/index.html {{tomcathome}}/webapps/ROOT/index.html1
+      ignore_errors: True
+      
+    - name: pause 30s
+      pause: seconds=30
+      
+    - name: stop tomcat
+      shell: ps -ef | grep {{tomcathome}} | grep -v grep | awk '{print $2}' | xargs kill -9
+      ignore_errors: True
+       
+    - name: rm
+      shell: rm {{tomcathome}}/webapps/{{finalName}}.war
+      ignore_errors: True
+      
+    - name: rm -rf
+      shell: rm -rf {{tomcathome}}/webapps/{{finalName}}
+      ignore_errors: True
+  
+    - name: start tomcat
+      shell: export LANG=en_US.UTF-8 && nohup {{tomcathome}}/bin/startup.sh
+      
+    - name: pause 30s
+      pause: seconds=30  
+  
+                                 
