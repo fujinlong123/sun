@@ -14,7 +14,7 @@
       
           
     - name: offline
-      copy: rm {{tomcathome}}/webapps/ROOT/index.html
+      shell: rm {{tomcathome}}/webapps/ROOT/index.html
       ignore_errors: True
       
     - name: pause 30s
