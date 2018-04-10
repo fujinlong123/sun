@@ -20,7 +20,7 @@ import cn.suishoucms.weixin.sun.sharesession.ShareSession;
 
 public class LoginFilter implements Filter {
 
-	private SessionService sessionService=SpringUtil.getBean(SessionService.class);
+	private SessionService sessionService = SpringUtil.getBean(SessionService.class);
 	private Set<String> noLoginPath = new HashSet<String>();
 
 	@Override
@@ -32,37 +32,33 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		String contextPath=((HttpServletRequest) request).getContextPath();
+		String contextPath = ((HttpServletRequest) request).getContextPath();
 		String path = ((HttpServletRequest) request).getRequestURI().replace(contextPath, "");
-		
-		String sessionId = request.getParameter("sessionId");
-		if (StringUtils.isNotBlank(sessionId)) {
-			SessionIdUtils.setSessionId(sessionId);
-		}
-		
+
+		SessionIdUtils.setSessionId(request.getParameter("sessionId"));
+
 		if (!noLoginPath.contains(path)) {
-		try {
-			ShareSession shareSession=sessionService.getShareSession();
-			if (shareSession.getWeiXinLoginInfo(true)==null) {
-				request.getRequestDispatcher("weixin/noLogin").forward(request, response);
-			}else{
-				chain.doFilter(request, response);
+			try {
+				ShareSession shareSession = sessionService.getShareSession();
+				if (shareSession.getWeiXinLoginInfo(true) == null) {
+					request.getRequestDispatcher("weixin/noLogin").forward(request, response);
+				} else {
+					chain.doFilter(request, response);
+				}
+			} catch (ExecutionException e) {
+				throw new ServletException(e);
 			}
-		} catch (ExecutionException e) {
-			throw new ServletException(e);
-		}
-		
-			
-		
-		}else{
+
+		} else {
 			chain.doFilter(request, response);
 		}
-		
+
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		noLoginPath.add("/weixin/onLogin");
+		noLoginPath.add("/weixin/onLogin2");
 
 	}
 
