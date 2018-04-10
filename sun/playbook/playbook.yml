@@ -34,9 +34,13 @@
   
     - name: start tomcat
       shell: export LANG=en_US.UTF-8 && nohup {{tomcathome}}/bin/startup.sh
+
       
     - name: pause 30s
       pause: seconds=30
+      
+    - name: wait for tomcat to start
+      wait_for: port=80 timeout=30      
       
     - name: online
       shell: echo "" >{{tomcathome}}/webapps/ROOT/index.html      
