@@ -3,6 +3,7 @@ package cn.suishoucms.weixin.sun.service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Resource;
 
@@ -22,7 +23,7 @@ public class SessionServiceTest extends BaseTest {
 	SessionService sessionService;
 	
 	@Test
-	public void test() throws InterruptedException{
+	public void test() throws InterruptedException, ExecutionException{
 		long s=System.currentTimeMillis();
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 		.getRequest().setAttribute("sessionId", "390ac68599de4c71bf9f6f7048cc6c59");
@@ -34,7 +35,7 @@ public class SessionServiceTest extends BaseTest {
 		Map<String, Object> map=new HashMap<>();
 		map.put("xx", "dd");
 		shareSession.setAttribute("fujinlong2", map);
-		map =shareSession.getAttribute("fujinlong2", Map.class);
+		map =shareSession.getAttribute("fujinlong2", Map.class,false);
 		System.out.println(map.get("xx"));
 		WeiXinLoginInfo weiXinLoginInfo=shareSession.getWeiXinLoginInfo();
 		System.out.println(JSON.toJSONString(weiXinLoginInfo));
