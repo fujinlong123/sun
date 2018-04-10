@@ -31,7 +31,9 @@
     - name: rm -rf
       shell: rm -rf {{tomcathome}}/webapps/{{finalName}}
       ignore_errors: True
-  
+    - name: copy war to tmp
+      shell: cp {{tomcathome}}/tmp/{{finalName}}.war  {{tomcathome}}/webapps/{{finalName}}.war
+        
     - name: start tomcat
       shell: export LANG=en_US.UTF-8 && nohup {{tomcathome}}/bin/startup.sh
 
