@@ -1,5 +1,7 @@
 package cn.suishoucms.weixin.sun.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.suishoucms.weixin.sun.entity.Product;
 
 public interface ProductMapper {
@@ -51,4 +53,7 @@ public interface ProductMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Product record);
+    
+    Product selectByStoreIdAndCode(@Param("storeId") Integer storeId,@Param("code")  String code);
+    
 }

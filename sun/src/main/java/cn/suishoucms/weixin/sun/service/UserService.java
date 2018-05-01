@@ -29,6 +29,10 @@ public class UserService {
 	
 	
 	
+	public User selectByOpenId(String openId){
+		return userMapper.selectByOpenid(openId);
+	}
+	
 	
 	
 	

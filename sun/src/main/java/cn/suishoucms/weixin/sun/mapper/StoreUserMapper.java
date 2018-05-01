@@ -54,4 +54,7 @@ public interface StoreUserMapper {
     int updateByPrimaryKey(StoreUser record);
 
     List<StoreUser> selectOwnerStoreUser(Integer userId);
+    
+    StoreUser selectCurrentStoreUser(Integer userId);
+    
 }

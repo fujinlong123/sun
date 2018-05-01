@@ -20,7 +20,7 @@ public class WeiXinLoginService {
 	private SessionService sessionService;
 	@Resource
 	private InitService initService;
-	public Result onLogin(String appid,String appSecret,String code ){
+	public Result onLogin(String appid,String appSecret,String code,String appName ){
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret="
 				+ appSecret + "&js_code=" + code + "&grant_type=authorization_code";
 		try {
@@ -32,7 +32,7 @@ public class WeiXinLoginService {
 				ShareSession shareSession=sessionService.getShareSession();
 				shareSession.setWeiXinLoginInfo(sr.getResponseBody());
 				WeiXinLoginInfo weiXinLoginInfo=shareSession.getWeiXinLoginInfo();
-				initService.init(weiXinLoginInfo.getOpenid());
+				initService.init(weiXinLoginInfo.getOpenid(),appName);
 				Result result=Result.success("登录成功");
 				result.setSessionId(sessionId);
 				

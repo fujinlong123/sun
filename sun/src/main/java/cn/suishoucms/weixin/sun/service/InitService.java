@@ -24,11 +24,12 @@ public class InitService {
 	@Resource
 	private StoreMapper storeMapper;
 	
-	public void init(String openid){
+	public void init(String openid,String appName){
 		User user=userMapper.selectByOpenid(openid);
 		if(user==null){
 			user=new User();
 			user.setOpenid(openid);
+			user.setFromApp(appName);
 			user.setInsertTime(new Date());
 			user.setUpdateTime(new Date());
 			userMapper.insertSelective(user);

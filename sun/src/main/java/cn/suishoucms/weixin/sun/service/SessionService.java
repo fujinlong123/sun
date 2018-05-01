@@ -28,7 +28,7 @@ public class SessionService {
 	@Resource
 	private SessionMapper sessionMapper;
 	
-	private  LoadingCache<String, ShareSession> cache = CacheBuilder.newBuilder().maximumSize(100000).refreshAfterWrite(1, TimeUnit.DAYS)
+	private  LoadingCache<String, ShareSession> cache = CacheBuilder.newBuilder().maximumSize(100000).refreshAfterWrite(1, TimeUnit.MINUTES)
 			.build(new CacheLoader<String, ShareSession>(){
 				@Override
 				public ShareSession load(String key) throws Exception {	

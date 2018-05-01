@@ -136,4 +136,7 @@
   <select id="selectOwnerStoreUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   select * from store_user where user_id=#{userId} and role='owner' order by id desc
   </select>
+  <select id="selectCurrentStoreUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   select * from store_user where user_id=#{userId} and selected=1 and fire!=1  order by id desc limit 1
+  </select>
 </mapper>
