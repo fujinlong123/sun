@@ -1,6 +1,11 @@
 package cn.suishoucms.weixin.sun.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageRowBounds;
 
 import cn.suishoucms.weixin.sun.entity.Product;
 
@@ -55,5 +60,9 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
     
     Product selectByStoreIdAndCode(@Param("storeId") Integer storeId,@Param("code")  String code);
+    
+    List<Product> query(@Param("storeId") Integer storeId,@Param("endId")  Integer endId);
+    
+    Page<Product> selectByPage(@Param("storeId") Integer storeId,PageRowBounds pageRowBounds);
     
 }

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.suishoucms.weixin.sun.entity.Store;
 import cn.suishoucms.weixin.sun.entity.StoreUser;
 import cn.suishoucms.weixin.sun.entity.User;
+import cn.suishoucms.weixin.sun.mapper.StoreMapper;
 import cn.suishoucms.weixin.sun.mapper.StoreUserMapper;
 import cn.suishoucms.weixin.sun.mapper.UserMapper;
 import cn.suishoucms.weixin.sun.model.WeiXinLoginInfo;
@@ -28,6 +30,10 @@ public class DataController {
 	@Resource
 	private StoreUserMapper storeUserMapper;
 
+	@Resource
+	private StoreMapper storeMapper;
+	
+	
 	@RequestMapping("loadSessionData")
 	@ResponseBody
 	public Result loadSessionData() throws ExecutionException {
@@ -36,8 +42,10 @@ public class DataController {
 		WeiXinLoginInfo weiXinLoginInfo = shareSession.getWeiXinLoginInfo();
 		User user = userMapper.selectByOpenid(weiXinLoginInfo.getOpenid());
 		StoreUser storeUser = storeUserMapper.selectCurrentStoreUser(user.getId());
+		Store store=storeMapper.selectByPrimaryKey(storeUser.getStoreId());
 		Result result=Result.success("加载成功");
 		result.data("storeId", storeUser.getStoreId());
+		result.data("storeName", store.getName());
 		return result;
 		
 		

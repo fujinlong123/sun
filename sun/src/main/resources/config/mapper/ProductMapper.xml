@@ -198,4 +198,15 @@
   	select * from product where store_id=#{storeId} and code=#{code} limit 1;
   </select>
   
+   <select id="query" parameterType="map" resultMap="BaseResultMap">
+  	select * from product where store_id=#{storeId} 
+  	<if test="endId!=null">and id&gt;#{endId} </if>
+  	order by id desc limit 20;
+  </select>
+  
+   <select id="selectByPage" parameterType="map" resultMap="BaseResultMap">
+  	select * from product where store_id=#{storeId} 
+  	order by id desc 
+  </select>
+
 </mapper>

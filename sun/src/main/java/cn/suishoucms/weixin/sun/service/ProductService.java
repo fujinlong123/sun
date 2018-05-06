@@ -1,6 +1,7 @@
 package cn.suishoucms.weixin.sun.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Resource;
@@ -44,6 +45,10 @@ public class ProductService {
 	public Product getProductByCode(Integer storeId, String code) {
 		return productMapper.selectByStoreIdAndCode(storeId, code);
 	}
+	
+	public List<Product> query(Integer storeId, Integer endId) {
+		return productMapper.query(storeId, endId);
+	}
 
 	private void init(Product record) throws ExecutionException {
 		ShareSession shareSession = sessionService.getShareSession();
@@ -65,5 +70,7 @@ public class ProductService {
 			record.setModifierId(user.getId());
 		}
 	}
+	
+	
 
 }
